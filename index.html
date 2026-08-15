@@ -15,6 +15,7 @@
             --border: #E0E6ED;
             --success: #52C41A;
             --danger: #FF4D4F;
+            --warning: #FAAD14;
             --shadow: 0 2px 12px rgba(0,0,0,0.08);
             --radius: 16px;
         }
@@ -33,7 +34,6 @@
             padding-bottom: 80px;
         }
 
-        /* 顶部导航 */
         .header {
             background: var(--card);
             padding: 20px 16px 16px;
@@ -49,27 +49,23 @@
             color: var(--text);
         }
 
-        .header .back-btn {
+        .back-btn {
             display: inline-block;
             margin-bottom: 12px;
             color: var(--primary);
             text-decoration: none;
             font-size: 14px;
             cursor: pointer;
+            background: none;
+            border: none;
         }
 
-        .header .back-btn:hover {
-            opacity: 0.7;
-        }
-
-        /* 主容器 */
         .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 16px;
         }
 
-        /* 卡片 */
         .card {
             background: var(--card);
             border-radius: var(--radius);
@@ -88,7 +84,6 @@
             justify-content: space-between;
         }
 
-        /* 按钮 */
         .btn {
             display: inline-block;
             padding: 12px 20px;
@@ -108,7 +103,7 @@
             color: white;
         }
 
-        .btn-primary:hover {
+        .btn-primary:active {
             background: #3A7BC8;
         }
 
@@ -129,7 +124,6 @@
             margin-bottom: 0;
         }
 
-        /* 输入框 */
         .input-group {
             margin-bottom: 16px;
         }
@@ -152,13 +146,12 @@
             transition: all 0.3s;
         }
 
-        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+        .input-group input:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(74,144,217,0.1);
         }
 
-        /* 成员标签 */
         .member-tags {
             display: flex;
             flex-wrap: wrap;
@@ -184,12 +177,6 @@
             border-color: var(--primary);
         }
 
-        .member-tag.disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        /* 单选按钮组 */
         .radio-group {
             display: flex;
             gap: 12px;
@@ -214,21 +201,11 @@
             color: var(--primary);
         }
 
-        /* 活动列表 */
-        .activity-list {
-            list-style: none;
-        }
-
         .activity-item {
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 12px;
-            transition: all 0.3s;
-        }
-
-        .activity-item:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .activity-header {
@@ -276,7 +253,26 @@
             margin-top: 10px;
         }
 
-        /* 结算区域 */
+        .btn-edit {
+            background: #FFF7E6;
+            color: var(--warning);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-delete {
+            background: #FFF1F0;
+            color: var(--danger);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
         .settlement {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -316,7 +312,6 @@
             font-size: 16px;
         }
 
-        /* 图片上传 */
         .image-upload {
             display: flex;
             gap: 10px;
@@ -324,17 +319,16 @@
             margin-top: 10px;
         }
 
+        .image-preview-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
         .image-preview {
             width: 80px;
             height: 80px;
             object-fit: cover;
             border-radius: 8px;
-            position: relative;
-        }
-
-        .image-preview-wrapper {
-            position: relative;
-            display: inline-block;
         }
 
         .image-remove {
@@ -354,27 +348,6 @@
             border: none;
         }
 
-        .upload-btn {
-            width: 80px;
-            height: 80px;
-            border: 2px dashed var(--border);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 30px;
-            color: var(--text-light);
-            transition: all 0.3s;
-            background: none;
-        }
-
-        .upload-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* 删除按钮 */
         .delete-btn {
             background: none;
             border: none;
@@ -384,11 +357,6 @@
             padding: 4px 8px;
         }
 
-        .delete-btn:hover {
-            opacity: 0.7;
-        }
-
-        /* 弹窗 */
         .modal {
             display: none;
             position: fixed;
@@ -427,7 +395,6 @@
             color: var(--text-light);
         }
 
-        /* 空状态 */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -438,28 +405,10 @@
             font-size: 48px;
             margin-bottom: 16px;
         }
-
-        /* 响应式 */
-        @media (max-width: 480px) {
-            .container {
-                padding: 12px;
-            }
-            
-            .card {
-                padding: 16px;
-            }
-            
-            .member-tag {
-                padding: 8px 12px;
-                font-size: 13px;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- 主页面 -->
     <div id="app">
-        <!-- 首页 - 项目列表 -->
         <div id="homePage">
             <div class="header">
                 <h1>📊 出行分账计算器</h1>
@@ -470,14 +419,12 @@
             </div>
         </div>
 
-        <!-- 项目详情页 -->
         <div id="projectPage" style="display:none;">
             <div class="header">
-                <div class="back-btn" onclick="backToHome()">← 返回</div>
+                <button class="back-btn" onclick="backToHome()">← 返回</button>
                 <h1 id="projectTitle"></h1>
             </div>
             <div class="container">
-                <!-- 项目成员 -->
                 <div class="card">
                     <div class="card-title">
                         <span>👥 项目成员</span>
@@ -486,7 +433,6 @@
                     <div class="member-tags" id="projectMembers"></div>
                 </div>
 
-                <!-- 活动列表 -->
                 <div class="card">
                     <div class="card-title">
                         <span>📝 活动记录</span>
@@ -495,7 +441,6 @@
                     <div id="activityList"></div>
                 </div>
 
-                <!-- 结算 -->
                 <div id="settlementArea"></div>
 
                 <button class="btn btn-danger" onclick="deleteCurrentProject()">删除项目</button>
@@ -503,7 +448,6 @@
         </div>
     </div>
 
-    <!-- 新建项目弹窗 -->
     <div class="modal" id="createProjectModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -522,7 +466,6 @@
         </div>
     </div>
 
-    <!-- 编辑成员弹窗 -->
     <div class="modal" id="editMembersModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -537,11 +480,10 @@
         </div>
     </div>
 
-    <!-- 添加活动弹窗 -->
     <div class="modal" id="addActivityModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>添加活动</h2>
+                <h2 id="activityModalTitle">添加活动</h2>
                 <button class="modal-close" onclick="closeModal('addActivityModal')">✕</button>
             </div>
             <div class="input-group">
@@ -573,31 +515,26 @@
             </div>
             <div class="input-group">
                 <label>上传图片（最多3张）</label>
-                <div class="image-upload" id="imageUploadArea">
-                    <button class="upload-btn" onclick="addImage()">＋</button>
-                </div>
-                <input type="file" id="imageInput" accept="image/*" multiple style="display:none;" onchange="handleImageUpload(event)">
+                <input type="file" id="imageInput" accept="image/*" multiple style="display:block;margin-bottom:10px;" onchange="handleImageUpload(event)">
+                <div class="image-upload" id="imageUploadArea"></div>
             </div>
             <button class="btn btn-primary" onclick="saveActivity()">保存活动</button>
         </div>
     </div>
 
     <script>
-        // 数据存储
         let projects = [];
         let currentProjectIndex = -1;
         let currentType = 'avg';
         let selectedMembers = [];
-        let tempImages = [];
         let currentActivityImages = [];
+        let editingActivityIndex = -1;
 
-        // 初始化
         function init() {
             loadProjects();
             renderProjectList();
         }
 
-        // 加载项目
         function loadProjects() {
             const stored = localStorage.getItem('projects');
             if (stored) {
@@ -605,12 +542,10 @@
             }
         }
 
-        // 保存项目
         function saveProjects() {
             localStorage.setItem('projects', JSON.stringify(projects));
         }
 
-        // 渲染项目列表
         function renderProjectList() {
             const list = document.getElementById('projectList');
             if (projects.length === 0) {
@@ -628,14 +563,12 @@
             }
         }
 
-        // 显示新建项目弹窗
         function showCreateProject() {
             document.getElementById('newProjectName').value = '';
             document.getElementById('newProjectMembers').value = '';
             document.getElementById('createProjectModal').style.display = 'flex';
         }
 
-        // 创建项目
         function createProject() {
             const name = document.getElementById('newProjectName').value.trim();
             const membersStr = document.getElementById('newProjectMembers').value.trim();
@@ -663,7 +596,6 @@
             closeModal('createProjectModal');
         }
 
-        // 打开项目
         function openProject(index) {
             currentProjectIndex = index;
             const project = projects[index];
@@ -675,30 +607,23 @@
             renderProjectDetails();
         }
 
-        // 返回首页
         function backToHome() {
             document.getElementById('projectPage').style.display = 'none';
             document.getElementById('homePage').style.display = 'block';
             renderProjectList();
         }
 
-        // 渲染项目详情
         function renderProjectDetails() {
             const project = projects[currentProjectIndex];
             
-            // 渲染成员
             document.getElementById('projectMembers').innerHTML = project.members.map(m => 
                 `<span class="member-tag">${m}</span>`
             ).join('');
             
-            // 渲染活动列表
             renderActivities();
-            
-            // 渲染结算
             renderSettlement();
         }
 
-        // 渲染活动列表
         function renderActivities() {
             const project = projects[currentProjectIndex];
             const list = document.getElementById('activityList');
@@ -727,7 +652,8 @@
                             <div class="activity-detail">${detailText}</div>
                             ${imagesHtml}
                             <div class="activity-actions">
-                                <button class="delete-btn" onclick="deleteActivity(${index})">删除</button>
+                                <button class="btn-edit" onclick="editActivity(${index})">编辑</button>
+                                <button class="btn-delete" onclick="deleteActivity(${index})">删除</button>
                             </div>
                         </div>
                     `;
@@ -735,7 +661,6 @@
             }
         }
 
-        // 渲染结算
         function renderSettlement() {
             const project = projects[currentProjectIndex];
             const total = calculateTotal(project);
@@ -757,12 +682,10 @@
             document.getElementById('settlementArea').innerHTML = settlementHtml;
         }
 
-        // 计算总花费
         function calculateTotal(project) {
             return project.activities.reduce((sum, activity) => sum + activity.totalAmount, 0);
         }
 
-        // 计算每人总花费
         function calculatePersonTotals(project) {
             const totals = {};
             project.members.forEach(m => totals[m] = 0);
@@ -783,14 +706,12 @@
             return totals;
         }
 
-        // 显示编辑成员弹窗
         function showEditMembers() {
             const project = projects[currentProjectIndex];
             document.getElementById('editMembersInput').value = project.members.join(',');
             document.getElementById('editMembersModal').style.display = 'flex';
         }
 
-        // 更新成员
         function updateMembers() {
             const membersStr = document.getElementById('editMembersInput').value.trim();
             const members = membersStr.split(/[,，、\s]+/).filter(m => m);
@@ -806,15 +727,15 @@
             closeModal('editMembersModal');
         }
 
-        // 显示添加活动弹窗
         function showAddActivity() {
-            const project = projects[currentProjectIndex];
+            editingActivityIndex = -1;
+            document.getElementById('activityModalTitle').textContent = '添加活动';
             selectedMembers = [];
-            tempImages = [];
             currentActivityImages = [];
             
             document.getElementById('activityName').value = '';
             document.getElementById('totalAmount').value = '';
+            document.getElementById('imageInput').value = '';
             selectType('avg');
             renderActivityMembers();
             renderCustomInputs();
@@ -823,7 +744,40 @@
             document.getElementById('addActivityModal').style.display = 'flex';
         }
 
-        // 选择花费类型
+        function editActivity(index) {
+            editingActivityIndex = index;
+            document.getElementById('activityModalTitle').textContent = '编辑活动';
+            
+            const activity = projects[currentProjectIndex].activities[index];
+            
+            document.getElementById('activityName').value = activity.name;
+            selectedMembers = [...activity.members];
+            currentActivityImages = [...activity.images];
+            
+            selectType(activity.type);
+            
+            if (activity.type === 'avg') {
+                document.getElementById('totalAmount').value = activity.totalAmount;
+            } else {
+                renderCustomInputs();
+                setTimeout(() => {
+                    const inputs = document.querySelectorAll('.custom-amount');
+                    inputs.forEach(input => {
+                        const member = input.dataset.member;
+                        const amount = activity.memberAmounts.find(ma => ma.member === member);
+                        if (amount) {
+                            input.value = amount.amount;
+                        }
+                    });
+                }, 100);
+            }
+            
+            renderActivityMembers();
+            renderImageUploads();
+            
+            document.getElementById('addActivityModal').style.display = 'flex';
+        }
+
         function selectType(type) {
             currentType = type;
             document.getElementById('typeAvg').className = 'radio-option' + (type === 'avg' ? ' active' : '');
@@ -835,7 +789,6 @@
             renderCustomInputs();
         }
 
-        // 渲染活动成员选择
         function renderActivityMembers() {
             const project = projects[currentProjectIndex];
             const container = document.getElementById('activityMembers');
@@ -846,7 +799,6 @@
             `).join('');
         }
 
-        // 切换成员选择
         function toggleMember(member) {
             const index = selectedMembers.indexOf(member);
             if (index > -1) {
@@ -858,7 +810,6 @@
             renderCustomInputs();
         }
 
-        // 渲染自定义输入
         function renderCustomInputs() {
             const container = document.getElementById('customAmountInputs');
             
@@ -875,16 +826,6 @@
             `).join('');
         }
 
-        // 添加图片
-        function addImage() {
-            if (currentActivityImages.length >= 3) {
-                alert('最多上传3张图片');
-                return;
-            }
-            document.getElementById('imageInput').click();
-        }
-
-        // 处理图片上传
         function handleImageUpload(event) {
             const files = event.target.files;
             
@@ -901,11 +842,8 @@
                 };
                 reader.readAsDataURL(file);
             }
-            
-            event.target.value = '';
         }
 
-        // 渲染图片上传
         function renderImageUploads() {
             const container = document.getElementById('imageUploadArea');
             
@@ -916,20 +854,14 @@
                 </div>
             `).join('');
             
-            const uploadBtn = currentActivityImages.length < 3 
-                ? '<button class="upload-btn" onclick="addImage()">＋</button>'
-                : '';
-            
-            container.innerHTML = imagesHtml + uploadBtn;
+            container.innerHTML = imagesHtml;
         }
 
-        // 移除图片
         function removeImage(index) {
             currentActivityImages.splice(index, 1);
             renderImageUploads();
         }
 
-        // 保存活动
         function saveActivity() {
             const name = document.getElementById('activityName').value.trim();
             
@@ -976,13 +908,17 @@
                 activity.totalAmount = totalAmount;
             }
             
-            projects[currentProjectIndex].activities.push(activity);
+            if (editingActivityIndex === -1) {
+                projects[currentProjectIndex].activities.push(activity);
+            } else {
+                projects[currentProjectIndex].activities[editingActivityIndex] = activity;
+            }
+            
             saveProjects();
             renderProjectDetails();
             closeModal('addActivityModal');
         }
 
-        // 删除活动
         function deleteActivity(index) {
             if (confirm('确定要删除这个活动吗？')) {
                 projects[currentProjectIndex].activities.splice(index, 1);
@@ -991,7 +927,6 @@
             }
         }
 
-        // 删除项目
         function deleteCurrentProject() {
             if (confirm('确定要删除整个项目吗？此操作不可恢复！')) {
                 projects.splice(currentProjectIndex, 1);
@@ -1000,17 +935,14 @@
             }
         }
 
-        // 关闭弹窗
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // 查看图片
         function viewImage(src) {
             window.open(src, '_blank');
         }
 
-        // 初始化
         init();
     </script>
 </body>
