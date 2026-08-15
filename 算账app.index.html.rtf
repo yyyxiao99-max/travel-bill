@@ -1,0 +1,1024 @@
+{\rtf1\ansi\ansicpg936\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="zh-CN">\
+<head>\
+    <meta charset="UTF-8">\
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">\
+    <title>\uc0\u20986 \u34892 \u20998 \u36134 \u35745 \u31639 \u22120 </title>\
+    <style>\
+        :root \{\
+            --primary: #4A90D9;\
+            --primary-light: #E8F1FA;\
+            --bg: #F5F7FA;\
+            --card: #FFFFFF;\
+            --text: #2C3E50;\
+            --text-light: #7F8C8D;\
+            --border: #E0E6ED;\
+            --success: #52C41A;\
+            --danger: #FF4D4F;\
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);\
+            --radius: 16px;\
+        \}\
+\
+        * \{\
+            margin: 0;\
+            padding: 0;\
+            box-sizing: border-box;\
+        \}\
+\
+        body \{\
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;\
+            background: var(--bg);\
+            color: var(--text);\
+            min-height: 100vh;\
+            padding-bottom: 80px;\
+        \}\
+\
+        /* \uc0\u39030 \u37096 \u23548 \u33322  */\
+        .header \{\
+            background: var(--card);\
+            padding: 20px 16px 16px;\
+            position: sticky;\
+            top: 0;\
+            z-index: 100;\
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);\
+        \}\
+\
+        .header h1 \{\
+            font-size: 20px;\
+            font-weight: 600;\
+            color: var(--text);\
+        \}\
+\
+        .header .back-btn \{\
+            display: inline-block;\
+            margin-bottom: 12px;\
+            color: var(--primary);\
+            text-decoration: none;\
+            font-size: 14px;\
+            cursor: pointer;\
+        \}\
+\
+        .header .back-btn:hover \{\
+            opacity: 0.7;\
+        \}\
+\
+        /* \uc0\u20027 \u23481 \u22120  */\
+        .container \{\
+            max-width: 600px;\
+            margin: 0 auto;\
+            padding: 16px;\
+        \}\
+\
+        /* \uc0\u21345 \u29255  */\
+        .card \{\
+            background: var(--card);\
+            border-radius: var(--radius);\
+            padding: 20px;\
+            margin-bottom: 16px;\
+            box-shadow: var(--shadow);\
+        \}\
+\
+        .card-title \{\
+            font-size: 16px;\
+            font-weight: 600;\
+            margin-bottom: 16px;\
+            color: var(--text);\
+            display: flex;\
+            align-items: center;\
+            justify-content: space-between;\
+        \}\
+\
+        /* \uc0\u25353 \u38062  */\
+        .btn \{\
+            display: inline-block;\
+            padding: 12px 20px;\
+            border-radius: 12px;\
+            border: none;\
+            font-size: 15px;\
+            font-weight: 500;\
+            cursor: pointer;\
+            transition: all 0.3s;\
+            text-align: center;\
+            width: 100%;\
+            margin-bottom: 8px;\
+        \}\
+\
+        .btn-primary \{\
+            background: var(--primary);\
+            color: white;\
+        \}\
+\
+        .btn-primary:hover \{\
+            background: #3A7BC8;\
+        \}\
+\
+        .btn-secondary \{\
+            background: var(--primary-light);\
+            color: var(--primary);\
+        \}\
+\
+        .btn-danger \{\
+            background: #FFF1F0;\
+            color: var(--danger);\
+        \}\
+\
+        .btn-small \{\
+            padding: 8px 12px;\
+            font-size: 13px;\
+            width: auto;\
+            margin-bottom: 0;\
+        \}\
+\
+        /* \uc0\u36755 \u20837 \u26694  */\
+        .input-group \{\
+            margin-bottom: 16px;\
+        \}\
+\
+        .input-group label \{\
+            display: block;\
+            font-size: 14px;\
+            font-weight: 500;\
+            margin-bottom: 8px;\
+            color: var(--text);\
+        \}\
+\
+        .input-group input, .input-group select, .input-group textarea \{\
+            width: 100%;\
+            padding: 12px;\
+            border: 1px solid var(--border);\
+            border-radius: 10px;\
+            font-size: 15px;\
+            font-family: inherit;\
+            transition: all 0.3s;\
+        \}\
+\
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus \{\
+            outline: none;\
+            border-color: var(--primary);\
+            box-shadow: 0 0 0 3px rgba(74,144,217,0.1);\
+        \}\
+\
+        /* \uc0\u25104 \u21592 \u26631 \u31614  */\
+        .member-tags \{\
+            display: flex;\
+            flex-wrap: wrap;\
+            gap: 10px;\
+            margin-bottom: 16px;\
+        \}\
+\
+        .member-tag \{\
+            padding: 10px 16px;\
+            border-radius: 20px;\
+            background: var(--primary-light);\
+            color: var(--primary);\
+            cursor: pointer;\
+            font-size: 14px;\
+            transition: all 0.3s;\
+            user-select: none;\
+            border: 2px solid transparent;\
+        \}\
+\
+        .member-tag.selected \{\
+            background: var(--primary);\
+            color: white;\
+            border-color: var(--primary);\
+        \}\
+\
+        .member-tag.disabled \{\
+            opacity: 0.4;\
+            cursor: not-allowed;\
+        \}\
+\
+        /* \uc0\u21333 \u36873 \u25353 \u38062 \u32452  */\
+        .radio-group \{\
+            display: flex;\
+            gap: 12px;\
+            margin-bottom: 16px;\
+        \}\
+\
+        .radio-option \{\
+            flex: 1;\
+            text-align: center;\
+            padding: 12px;\
+            border: 2px solid var(--border);\
+            border-radius: 10px;\
+            cursor: pointer;\
+            transition: all 0.3s;\
+            font-size: 14px;\
+            font-weight: 500;\
+        \}\
+\
+        .radio-option.active \{\
+            border-color: var(--primary);\
+            background: var(--primary-light);\
+            color: var(--primary);\
+        \}\
+\
+        /* \uc0\u27963 \u21160 \u21015 \u34920  */\
+        .activity-list \{\
+            list-style: none;\
+        \}\
+\
+        .activity-item \{\
+            border: 1px solid var(--border);\
+            border-radius: 12px;\
+            padding: 16px;\
+            margin-bottom: 12px;\
+            transition: all 0.3s;\
+        \}\
+\
+        .activity-item:hover \{\
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);\
+        \}\
+\
+        .activity-header \{\
+            display: flex;\
+            justify-content: space-between;\
+            align-items: center;\
+            margin-bottom: 10px;\
+        \}\
+\
+        .activity-name \{\
+            font-weight: 600;\
+            font-size: 15px;\
+        \}\
+\
+        .activity-amount \{\
+            font-weight: 600;\
+            color: var(--primary);\
+            font-size: 15px;\
+        \}\
+\
+        .activity-detail \{\
+            font-size: 13px;\
+            color: var(--text-light);\
+            margin-bottom: 8px;\
+        \}\
+\
+        .activity-images \{\
+            display: flex;\
+            gap: 8px;\
+            flex-wrap: wrap;\
+            margin-top: 10px;\
+        \}\
+\
+        .activity-images img \{\
+            width: 80px;\
+            height: 80px;\
+            object-fit: cover;\
+            border-radius: 8px;\
+            cursor: pointer;\
+        \}\
+\
+        .activity-actions \{\
+            display: flex;\
+            gap: 8px;\
+            margin-top: 10px;\
+        \}\
+\
+        /* \uc0\u32467 \u31639 \u21306 \u22495  */\
+        .settlement \{\
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\
+            color: white;\
+            padding: 20px;\
+            border-radius: var(--radius);\
+            margin-bottom: 16px;\
+        \}\
+\
+        .settlement-title \{\
+            font-size: 18px;\
+            font-weight: 600;\
+            margin-bottom: 16px;\
+        \}\
+\
+        .settlement-total \{\
+            font-size: 32px;\
+            font-weight: 700;\
+            margin-bottom: 20px;\
+        \}\
+\
+        .settlement-person \{\
+            background: rgba(255,255,255,0.15);\
+            border-radius: 10px;\
+            padding: 12px;\
+            margin-bottom: 8px;\
+            display: flex;\
+            justify-content: space-between;\
+            align-items: center;\
+        \}\
+\
+        .settlement-person-name \{\
+            font-weight: 500;\
+        \}\
+\
+        .settlement-person-amount \{\
+            font-weight: 600;\
+            font-size: 16px;\
+        \}\
+\
+        /* \uc0\u22270 \u29255 \u19978 \u20256  */\
+        .image-upload \{\
+            display: flex;\
+            gap: 10px;\
+            flex-wrap: wrap;\
+            margin-top: 10px;\
+        \}\
+\
+        .image-preview \{\
+            width: 80px;\
+            height: 80px;\
+            object-fit: cover;\
+            border-radius: 8px;\
+            position: relative;\
+        \}\
+\
+        .image-preview-wrapper \{\
+            position: relative;\
+            display: inline-block;\
+        \}\
+\
+        .image-remove \{\
+            position: absolute;\
+            top: -8px;\
+            right: -8px;\
+            background: var(--danger);\
+            color: white;\
+            border-radius: 50%;\
+            width: 20px;\
+            height: 20px;\
+            display: flex;\
+            align-items: center;\
+            justify-content: center;\
+            cursor: pointer;\
+            font-size: 12px;\
+            border: none;\
+        \}\
+\
+        .upload-btn \{\
+            width: 80px;\
+            height: 80px;\
+            border: 2px dashed var(--border);\
+            border-radius: 8px;\
+            display: flex;\
+            align-items: center;\
+            justify-content: center;\
+            cursor: pointer;\
+            font-size: 30px;\
+            color: var(--text-light);\
+            transition: all 0.3s;\
+            background: none;\
+        \}\
+\
+        .upload-btn:hover \{\
+            border-color: var(--primary);\
+            color: var(--primary);\
+        \}\
+\
+        /* \uc0\u21024 \u38500 \u25353 \u38062  */\
+        .delete-btn \{\
+            background: none;\
+            border: none;\
+            color: var(--danger);\
+            cursor: pointer;\
+            font-size: 13px;\
+            padding: 4px 8px;\
+        \}\
+\
+        .delete-btn:hover \{\
+            opacity: 0.7;\
+        \}\
+\
+        /* \uc0\u24377 \u31383  */\
+        .modal \{\
+            display: none;\
+            position: fixed;\
+            top: 0;\
+            left: 0;\
+            width: 100%;\
+            height: 100%;\
+            background: rgba(0,0,0,0.5);\
+            z-index: 1000;\
+            justify-content: center;\
+            align-items: center;\
+        \}\
+\
+        .modal-content \{\
+            background: white;\
+            border-radius: 16px;\
+            padding: 24px;\
+            width: 90%;\
+            max-width: 500px;\
+            max-height: 80vh;\
+            overflow-y: auto;\
+        \}\
+\
+        .modal-header \{\
+            display: flex;\
+            justify-content: space-between;\
+            align-items: center;\
+            margin-bottom: 20px;\
+        \}\
+\
+        .modal-close \{\
+            background: none;\
+            border: none;\
+            font-size: 24px;\
+            cursor: pointer;\
+            color: var(--text-light);\
+        \}\
+\
+        /* \uc0\u31354 \u29366 \u24577  */\
+        .empty-state \{\
+            text-align: center;\
+            padding: 40px 20px;\
+            color: var(--text-light);\
+        \}\
+\
+        .empty-state-icon \{\
+            font-size: 48px;\
+            margin-bottom: 16px;\
+        \}\
+\
+        /* \uc0\u21709 \u24212 \u24335  */\
+        @media (max-width: 480px) \{\
+            .container \{\
+                padding: 12px;\
+            \}\
+            \
+            .card \{\
+                padding: 16px;\
+            \}\
+            \
+            .member-tag \{\
+                padding: 8px 12px;\
+                font-size: 13px;\
+            \}\
+        \}\
+    </style>\
+</head>\
+<body>\
+    <!-- \uc0\u20027 \u39029 \u38754  -->\
+    <div id="app">\
+        <!-- \uc0\u39318 \u39029  - \u39033 \u30446 \u21015 \u34920  -->\
+        <div id="homePage">\
+            <div class="header">\
+                <h1>\uc0\u55357 \u56522  \u20986 \u34892 \u20998 \u36134 \u35745 \u31639 \u22120 </h1>\
+            </div>\
+            <div class="container">\
+                <button class="btn btn-primary" onclick="showCreateProject()">\uc0\u65291  \u26032 \u24314 \u39033 \u30446 </button>\
+                <div id="projectList"></div>\
+            </div>\
+        </div>\
+\
+        <!-- \uc0\u39033 \u30446 \u35814 \u24773 \u39029  -->\
+        <div id="projectPage" style="display:none;">\
+            <div class="header">\
+                <div class="back-btn" onclick="backToHome()">\uc0\u8592  \u36820 \u22238 </div>\
+                <h1 id="projectTitle"></h1>\
+            </div>\
+            <div class="container">\
+                <!-- \uc0\u39033 \u30446 \u25104 \u21592  -->\
+                <div class="card">\
+                    <div class="card-title">\
+                        <span>\uc0\u55357 \u56421  \u39033 \u30446 \u25104 \u21592 </span>\
+                        <button class="btn btn-small btn-secondary" onclick="showEditMembers()">\uc0\u32534 \u36753 \u25104 \u21592 </button>\
+                    </div>\
+                    <div class="member-tags" id="projectMembers"></div>\
+                </div>\
+\
+                <!-- \uc0\u27963 \u21160 \u21015 \u34920  -->\
+                <div class="card">\
+                    <div class="card-title">\
+                        <span>\uc0\u55357 \u56541  \u27963 \u21160 \u35760 \u24405 </span>\
+                        <button class="btn btn-small btn-primary" onclick="showAddActivity()">\uc0\u65291  \u28155 \u21152 \u27963 \u21160 </button>\
+                    </div>\
+                    <div id="activityList"></div>\
+                </div>\
+\
+                <!-- \uc0\u32467 \u31639  -->\
+                <div id="settlementArea"></div>\
+\
+                <button class="btn btn-danger" onclick="deleteCurrentProject()">\uc0\u21024 \u38500 \u39033 \u30446 </button>\
+            </div>\
+        </div>\
+    </div>\
+\
+    <!-- \uc0\u26032 \u24314 \u39033 \u30446 \u24377 \u31383  -->\
+    <div class="modal" id="createProjectModal">\
+        <div class="modal-content">\
+            <div class="modal-header">\
+                <h2>\uc0\u26032 \u24314 \u39033 \u30446 </h2>\
+                <button class="modal-close" onclick="closeModal('createProjectModal')">\uc0\u10005 </button>\
+            </div>\
+            <div class="input-group">\
+                <label>\uc0\u39033 \u30446 \u21517 \u31216 </label>\
+                <input type="text" id="newProjectName" placeholder="\uc0\u20363 \u22914 \u65306 XXX\u26053 \u28216 ">\
+            </div>\
+            <div class="input-group">\
+                <label>\uc0\u25104 \u21592 \u65288 \u26368 \u22810 10\u20154 \u65292 \u29992 \u36887 \u21495 \u20998 \u38548 \u65289 </label>\
+                <input type="text" id="newProjectMembers" placeholder="\uc0\u20363 \u22914 \u65306 \u23567 \u26126 ,\u23567 \u32418 ,\u23567 \u21018 ">\
+            </div>\
+            <button class="btn btn-primary" onclick="createProject()">\uc0\u21019 \u24314 \u39033 \u30446 </button>\
+        </div>\
+    </div>\
+\
+    <!-- \uc0\u32534 \u36753 \u25104 \u21592 \u24377 \u31383  -->\
+    <div class="modal" id="editMembersModal">\
+        <div class="modal-content">\
+            <div class="modal-header">\
+                <h2>\uc0\u32534 \u36753 \u25104 \u21592 </h2>\
+                <button class="modal-close" onclick="closeModal('editMembersModal')">\uc0\u10005 </button>\
+            </div>\
+            <div class="input-group">\
+                <label>\uc0\u25104 \u21592 \u65288 \u29992 \u36887 \u21495 \u20998 \u38548 \u65289 </label>\
+                <input type="text" id="editMembersInput">\
+            </div>\
+            <button class="btn btn-primary" onclick="updateMembers()">\uc0\u20445 \u23384 </button>\
+        </div>\
+    </div>\
+\
+    <!-- \uc0\u28155 \u21152 \u27963 \u21160 \u24377 \u31383  -->\
+    <div class="modal" id="addActivityModal">\
+        <div class="modal-content">\
+            <div class="modal-header">\
+                <h2>\uc0\u28155 \u21152 \u27963 \u21160 </h2>\
+                <button class="modal-close" onclick="closeModal('addActivityModal')">\uc0\u10005 </button>\
+            </div>\
+            <div class="input-group">\
+                <label>\uc0\u27963 \u21160 \u21517 \u31216 </label>\
+                <input type="text" id="activityName" placeholder="\uc0\u20363 \u22914 \u65306 \u21507 \u39277 ">\
+            </div>\
+            <div class="input-group">\
+                <label>\uc0\u33457 \u36153 \u31867 \u22411 </label>\
+                <div class="radio-group">\
+                    <div class="radio-option active" id="typeAvg" onclick="selectType('avg')">\uc0\u24179 \u22343 \u33457 \u36153 </div>\
+                    <div class="radio-option" id="typeCustom" onclick="selectType('custom')">\uc0\u19981 \u24179 \u22343 \u33457 \u36153 </div>\
+                </div>\
+            </div>\
+            <div class="input-group">\
+                <label>\uc0\u21442 \u19982 \u25104 \u21592 </label>\
+                <div class="member-tags" id="activityMembers"></div>\
+            </div>\
+            <div id="avgInputArea">\
+                <div class="input-group">\
+                    <label>\uc0\u24635 \u33457 \u36153 \u65288 \u20803 \u65289 </label>\
+                    <input type="number" id="totalAmount" placeholder="0.00" step="0.01">\
+                </div>\
+            </div>\
+            <div id="customInputArea" style="display:none;">\
+                <div class="input-group">\
+                    <label>\uc0\u27599 \u20154 \u33457 \u36153 \u65288 \u20803 \u65289 </label>\
+                    <div id="customAmountInputs"></div>\
+                </div>\
+            </div>\
+            <div class="input-group">\
+                <label>\uc0\u19978 \u20256 \u22270 \u29255 \u65288 \u26368 \u22810 3\u24352 \u65289 </label>\
+                <div class="image-upload" id="imageUploadArea">\
+                    <button class="upload-btn" onclick="addImage()">\uc0\u65291 </button>\
+                </div>\
+                <input type="file" id="imageInput" accept="image/*" multiple style="display:none;" onchange="handleImageUpload(event)">\
+            </div>\
+            <button class="btn btn-primary" onclick="saveActivity()">\uc0\u20445 \u23384 \u27963 \u21160 </button>\
+        </div>\
+    </div>\
+\
+    <script>\
+        // \uc0\u25968 \u25454 \u23384 \u20648 \
+        let projects = [];\
+        let currentProjectIndex = -1;\
+        let currentType = 'avg';\
+        let selectedMembers = [];\
+        let tempImages = [];\
+        let currentActivityImages = [];\
+\
+        // \uc0\u21021 \u22987 \u21270 \
+        function init() \{\
+            loadProjects();\
+            renderProjectList();\
+        \}\
+\
+        // \uc0\u21152 \u36733 \u39033 \u30446 \
+        function loadProjects() \{\
+            const stored = localStorage.getItem('projects');\
+            if (stored) \{\
+                projects = JSON.parse(stored);\
+            \}\
+        \}\
+\
+        // \uc0\u20445 \u23384 \u39033 \u30446 \
+        function saveProjects() \{\
+            localStorage.setItem('projects', JSON.stringify(projects));\
+        \}\
+\
+        // \uc0\u28210 \u26579 \u39033 \u30446 \u21015 \u34920 \
+        function renderProjectList() \{\
+            const list = document.getElementById('projectList');\
+            if (projects.length === 0) \{\
+                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">\uc0\u55357 \u56523 </div><p>\u36824 \u27809 \u26377 \u39033 \u30446 \u65292 \u28857 \u20987 \u19978 \u26041 \u25353 \u38062 \u21019 \u24314 \u21543 \u65281 </p></div>';\
+            \} else \{\
+                list.innerHTML = projects.map((project, index) => `\
+                    <div class="card" onclick="openProject($\{index\})" style="cursor:pointer;">\
+                        <div class="activity-header">\
+                            <div class="activity-name">$\{project.name\}</div>\
+                            <div class="activity-amount">\'a5$\{calculateTotal(project).toFixed(2)\}</div>\
+                        </div>\
+                        <div class="activity-detail">$\{project.members.length\}\uc0\u20154  \'b7 $\{project.activities.length\}\u20010 \u27963 \u21160 </div>\
+                    </div>\
+                `).join('');\
+            \}\
+        \}\
+\
+        // \uc0\u26174 \u31034 \u26032 \u24314 \u39033 \u30446 \u24377 \u31383 \
+        function showCreateProject() \{\
+            document.getElementById('newProjectName').value = '';\
+            document.getElementById('newProjectMembers').value = '';\
+            document.getElementById('createProjectModal').style.display = 'flex';\
+        \}\
+\
+        // \uc0\u21019 \u24314 \u39033 \u30446 \
+        function createProject() \{\
+            const name = document.getElementById('newProjectName').value.trim();\
+            const membersStr = document.getElementById('newProjectMembers').value.trim();\
+            \
+            if (!name) \{\
+                alert('\uc0\u35831 \u36755 \u20837 \u39033 \u30446 \u21517 \u31216 ');\
+                return;\
+            \}\
+            \
+            const members = membersStr.split(/[,\uc0\u65292 \u12289 \\s]+/).filter(m => m);\
+            if (members.length < 2 || members.length > 10) \{\
+                alert('\uc0\u25104 \u21592 \u25968 \u37327 \u38656 \u35201 \u22312 2-10\u20154 \u20043 \u38388 ');\
+                return;\
+            \}\
+\
+            projects.push(\{\
+                name: name,\
+                members: members,\
+                activities: [],\
+                createdAt: new Date().toISOString()\
+            \});\
+\
+            saveProjects();\
+            renderProjectList();\
+            closeModal('createProjectModal');\
+        \}\
+\
+        // \uc0\u25171 \u24320 \u39033 \u30446 \
+        function openProject(index) \{\
+            currentProjectIndex = index;\
+            const project = projects[index];\
+            \
+            document.getElementById('homePage').style.display = 'none';\
+            document.getElementById('projectPage').style.display = 'block';\
+            document.getElementById('projectTitle').textContent = project.name;\
+            \
+            renderProjectDetails();\
+        \}\
+\
+        // \uc0\u36820 \u22238 \u39318 \u39029 \
+        function backToHome() \{\
+            document.getElementById('projectPage').style.display = 'none';\
+            document.getElementById('homePage').style.display = 'block';\
+            renderProjectList();\
+        \}\
+\
+        // \uc0\u28210 \u26579 \u39033 \u30446 \u35814 \u24773 \
+        function renderProjectDetails() \{\
+            const project = projects[currentProjectIndex];\
+            \
+            // \uc0\u28210 \u26579 \u25104 \u21592 \
+            document.getElementById('projectMembers').innerHTML = project.members.map(m => \
+                `<span class="member-tag">$\{m\}</span>`\
+            ).join('');\
+            \
+            // \uc0\u28210 \u26579 \u27963 \u21160 \u21015 \u34920 \
+            renderActivities();\
+            \
+            // \uc0\u28210 \u26579 \u32467 \u31639 \
+            renderSettlement();\
+        \}\
+\
+        // \uc0\u28210 \u26579 \u27963 \u21160 \u21015 \u34920 \
+        function renderActivities() \{\
+            const project = projects[currentProjectIndex];\
+            const list = document.getElementById('activityList');\
+            \
+            if (project.activities.length === 0) \{\
+                list.innerHTML = '<div class="empty-state"><p>\uc0\u36824 \u27809 \u26377 \u27963 \u21160 \u35760 \u24405 </p></div>';\
+            \} else \{\
+                list.innerHTML = project.activities.map((activity, index) => \{\
+                    const imagesHtml = activity.images && activity.images.length > 0 \
+                        ? `<div class="activity-images">$\{activity.images.map(img => `<img src="$\{img\}" onclick="viewImage('$\{img\}')">`).join('')\}</div>`\
+                        : '';\
+                    \
+                    const detailText = activity.type === 'avg' \
+                        ? `\uc0\u20154 \u22343 \u65306 \'a5$\{(activity.totalAmount / activity.members.length).toFixed(2)\}`\
+                        : activity.memberAmounts.map(ma => `$\{ma.member\}\uc0\u65306 \'a5$\{ma.amount.toFixed(2)\}`).join('\u65292 ');\
+                    \
+                    return `\
+                        <div class="activity-item">\
+                            <div class="activity-header">\
+                                <div class="activity-name">$\{activity.name\}</div>\
+                                <div class="activity-amount">\'a5$\{activity.totalAmount.toFixed(2)\}</div>\
+                            </div>\
+                            <div class="activity-detail">\
+                                $\{activity.members.join('\uc0\u12289 ')\} \'b7 $\{activity.type === 'avg' ? '\u24179 \u22343 \u33457 \u36153 ' : '\u19981 \u24179 \u22343 \u33457 \u36153 '\}\
+                            </div>\
+                            <div class="activity-detail">$\{detailText\}</div>\
+                            $\{imagesHtml\}\
+                            <div class="activity-actions">\
+                                <button class="delete-btn" onclick="deleteActivity($\{index\})">\uc0\u21024 \u38500 </button>\
+                            </div>\
+                        </div>\
+                    `;\
+                \}).join('');\
+            \}\
+        \}\
+\
+        // \uc0\u28210 \u26579 \u32467 \u31639 \
+        function renderSettlement() \{\
+            const project = projects[currentProjectIndex];\
+            const total = calculateTotal(project);\
+            const personTotals = calculatePersonTotals(project);\
+            \
+            const settlementHtml = `\
+                <div class="settlement">\
+                    <div class="settlement-title">\uc0\u55357 \u56462  \u39033 \u30446 \u32467 \u31639 </div>\
+                    <div class="settlement-total">\uc0\u24635 \u33457 \u36153 \u65306 \'a5$\{total.toFixed(2)\}</div>\
+                    $\{project.members.map(member => `\
+                        <div class="settlement-person">\
+                            <span class="settlement-person-name">$\{member\}</span>\
+                            <span class="settlement-person-amount">\'a5$\{(personTotals[member] || 0).toFixed(2)\}</span>\
+                        </div>\
+                    `).join('')\}\
+                </div>\
+            `;\
+            \
+            document.getElementById('settlementArea').innerHTML = settlementHtml;\
+        \}\
+\
+        // \uc0\u35745 \u31639 \u24635 \u33457 \u36153 \
+        function calculateTotal(project) \{\
+            return project.activities.reduce((sum, activity) => sum + activity.totalAmount, 0);\
+        \}\
+\
+        // \uc0\u35745 \u31639 \u27599 \u20154 \u24635 \u33457 \u36153 \
+        function calculatePersonTotals(project) \{\
+            const totals = \{\};\
+            project.members.forEach(m => totals[m] = 0);\
+            \
+            project.activities.forEach(activity => \{\
+                if (activity.type === 'avg') \{\
+                    const perPerson = activity.totalAmount / activity.members.length;\
+                    activity.members.forEach(m => \{\
+                        totals[m] += perPerson;\
+                    \});\
+                \} else \{\
+                    activity.memberAmounts.forEach(ma => \{\
+                        totals[ma.member] += ma.amount;\
+                    \});\
+                \}\
+            \});\
+            \
+            return totals;\
+        \}\
+\
+        // \uc0\u26174 \u31034 \u32534 \u36753 \u25104 \u21592 \u24377 \u31383 \
+        function showEditMembers() \{\
+            const project = projects[currentProjectIndex];\
+            document.getElementById('editMembersInput').value = project.members.join(',');\
+            document.getElementById('editMembersModal').style.display = 'flex';\
+        \}\
+\
+        // \uc0\u26356 \u26032 \u25104 \u21592 \
+        function updateMembers() \{\
+            const membersStr = document.getElementById('editMembersInput').value.trim();\
+            const members = membersStr.split(/[,\uc0\u65292 \u12289 \\s]+/).filter(m => m);\
+            \
+            if (members.length < 2 || members.length > 10) \{\
+                alert('\uc0\u25104 \u21592 \u25968 \u37327 \u38656 \u35201 \u22312 2-10\u20154 \u20043 \u38388 ');\
+                return;\
+            \}\
+            \
+            projects[currentProjectIndex].members = members;\
+            saveProjects();\
+            renderProjectDetails();\
+            closeModal('editMembersModal');\
+        \}\
+\
+        // \uc0\u26174 \u31034 \u28155 \u21152 \u27963 \u21160 \u24377 \u31383 \
+        function showAddActivity() \{\
+            const project = projects[currentProjectIndex];\
+            selectedMembers = [];\
+            tempImages = [];\
+            currentActivityImages = [];\
+            \
+            document.getElementById('activityName').value = '';\
+            document.getElementById('totalAmount').value = '';\
+            selectType('avg');\
+            renderActivityMembers();\
+            renderCustomInputs();\
+            renderImageUploads();\
+            \
+            document.getElementById('addActivityModal').style.display = 'flex';\
+        \}\
+\
+        // \uc0\u36873 \u25321 \u33457 \u36153 \u31867 \u22411 \
+        function selectType(type) \{\
+            currentType = type;\
+            document.getElementById('typeAvg').className = 'radio-option' + (type === 'avg' ? ' active' : '');\
+            document.getElementById('typeCustom').className = 'radio-option' + (type === 'custom' ? ' active' : '');\
+            \
+            document.getElementById('avgInputArea').style.display = type === 'avg' ? 'block' : 'none';\
+            document.getElementById('customInputArea').style.display = type === 'custom' ? 'block' : 'none';\
+            \
+            renderCustomInputs();\
+        \}\
+\
+        // \uc0\u28210 \u26579 \u27963 \u21160 \u25104 \u21592 \u36873 \u25321 \
+        function renderActivityMembers() \{\
+            const project = projects[currentProjectIndex];\
+            const container = document.getElementById('activityMembers');\
+            \
+            container.innerHTML = project.members.map(member => `\
+                <span class="member-tag $\{selectedMembers.includes(member) ? 'selected' : ''\}" \
+                      onclick="toggleMember('$\{member\}')">$\{member\}</span>\
+            `).join('');\
+        \}\
+\
+        // \uc0\u20999 \u25442 \u25104 \u21592 \u36873 \u25321 \
+        function toggleMember(member) \{\
+            const index = selectedMembers.indexOf(member);\
+            if (index > -1) \{\
+                selectedMembers.splice(index, 1);\
+            \} else \{\
+                selectedMembers.push(member);\
+            \}\
+            renderActivityMembers();\
+            renderCustomInputs();\
+        \}\
+\
+        // \uc0\u28210 \u26579 \u33258 \u23450 \u20041 \u36755 \u20837 \
+        function renderCustomInputs() \{\
+            const container = document.getElementById('customAmountInputs');\
+            \
+            if (currentType !== 'custom') \{\
+                container.innerHTML = '';\
+                return;\
+            \}\
+            \
+            container.innerHTML = selectedMembers.map(member => `\
+                <div class="input-group">\
+                    <label>$\{member\}\uc0\u30340 \u33457 \u36153 \u65288 \u20803 \u65289 </label>\
+                    <input type="number" class="custom-amount" data-member="$\{member\}" placeholder="0.00" step="0.01">\
+                </div>\
+            `).join('');\
+        \}\
+\
+        // \uc0\u28155 \u21152 \u22270 \u29255 \
+        function addImage() \{\
+            if (currentActivityImages.length >= 3) \{\
+                alert('\uc0\u26368 \u22810 \u19978 \u20256 3\u24352 \u22270 \u29255 ');\
+                return;\
+            \}\
+            document.getElementById('imageInput').click();\
+        \}\
+\
+        // \uc0\u22788 \u29702 \u22270 \u29255 \u19978 \u20256 \
+        function handleImageUpload(event) \{\
+            const files = event.target.files;\
+            \
+            for (let file of files) \{\
+                if (currentActivityImages.length >= 3) \{\
+                    alert('\uc0\u26368 \u22810 \u19978 \u20256 3\u24352 \u22270 \u29255 ');\
+                    break;\
+                \}\
+                \
+                const reader = new FileReader();\
+                reader.onload = function(e) \{\
+                    currentActivityImages.push(e.target.result);\
+                    renderImageUploads();\
+                \};\
+                reader.readAsDataURL(file);\
+            \}\
+            \
+            event.target.value = '';\
+        \}\
+\
+        // \uc0\u28210 \u26579 \u22270 \u29255 \u19978 \u20256 \
+        function renderImageUploads() \{\
+            const container = document.getElementById('imageUploadArea');\
+            \
+            const imagesHtml = currentActivityImages.map((img, index) => `\
+                <div class="image-preview-wrapper">\
+                    <img src="$\{img\}" class="image-preview">\
+                    <button class="image-remove" onclick="removeImage($\{index\})">\uc0\u10005 </button>\
+                </div>\
+            `).join('');\
+            \
+            const uploadBtn = currentActivityImages.length < 3 \
+                ? '<button class="upload-btn" onclick="addImage()">\uc0\u65291 </button>'\
+                : '';\
+            \
+            container.innerHTML = imagesHtml + uploadBtn;\
+        \}\
+\
+        // \uc0\u31227 \u38500 \u22270 \u29255 \
+        function removeImage(index) \{\
+            currentActivityImages.splice(index, 1);\
+            renderImageUploads();\
+        \}\
+\
+        // \uc0\u20445 \u23384 \u27963 \u21160 \
+        function saveActivity() \{\
+            const name = document.getElementById('activityName').value.trim();\
+            \
+            if (!name) \{\
+                alert('\uc0\u35831 \u36755 \u20837 \u27963 \u21160 \u21517 \u31216 ');\
+                return;\
+            \}\
+            \
+            if (selectedMembers.length === 0) \{\
+                alert('\uc0\u35831 \u36873 \u25321 \u21442 \u19982 \u25104 \u21592 ');\
+                return;\
+            \}\
+            \
+            let activity = \{\
+                name: name,\
+                type: currentType,\
+                members: [...selectedMembers],\
+                images: [...currentActivityImages],\
+                totalAmount: 0,\
+                memberAmounts: []\
+            \};\
+            \
+            if (currentType === 'avg') \{\
+                const totalAmount = parseFloat(document.getElementById('totalAmount').value);\
+                if (!totalAmount || totalAmount <= 0) \{\
+                    alert('\uc0\u35831 \u36755 \u20837 \u26377 \u25928 \u30340 \u24635 \u33457 \u36153 ');\
+                    return;\
+                \}\
+                activity.totalAmount = totalAmount;\
+            \} else \{\
+                const customInputs = document.querySelectorAll('.custom-amount');\
+                let totalAmount = 0;\
+                \
+                customInputs.forEach(input => \{\
+                    const member = input.dataset.member;\
+                    const amount = parseFloat(input.value) || 0;\
+                    totalAmount += amount;\
+                    activity.memberAmounts.push(\{\
+                        member: member,\
+                        amount: amount\
+                    \});\
+                \});\
+                \
+                activity.totalAmount = totalAmount;\
+            \}\
+            \
+            projects[currentProjectIndex].activities.push(activity);\
+            saveProjects();\
+            renderProjectDetails();\
+            closeModal('addActivityModal');\
+        \}\
+\
+        // \uc0\u21024 \u38500 \u27963 \u21160 \
+        function deleteActivity(index) \{\
+            if (confirm('\uc0\u30830 \u23450 \u35201 \u21024 \u38500 \u36825 \u20010 \u27963 \u21160 \u21527 \u65311 ')) \{\
+                projects[currentProjectIndex].activities.splice(index, 1);\
+                saveProjects();\
+                renderProjectDetails();\
+            \}\
+        \}\
+\
+        // \uc0\u21024 \u38500 \u39033 \u30446 \
+        function deleteCurrentProject() \{\
+            if (confirm('\uc0\u30830 \u23450 \u35201 \u21024 \u38500 \u25972 \u20010 \u39033 \u30446 \u21527 \u65311 \u27492 \u25805 \u20316 \u19981 \u21487 \u24674 \u22797 \u65281 ')) \{\
+                projects.splice(currentProjectIndex, 1);\
+                saveProjects();\
+                backToHome();\
+            \}\
+        \}\
+\
+        // \uc0\u20851 \u38381 \u24377 \u31383 \
+        function closeModal(modalId) \{\
+            document.getElementById(modalId).style.display = 'none';\
+        \}\
+\
+        // \uc0\u26597 \u30475 \u22270 \u29255 \
+        function viewImage(src) \{\
+            window.open(src, '_blank');\
+        \}\
+\
+        // \uc0\u21021 \u22987 \u21270 \
+        init();\
+    </script>\
+</body>\
+</html>}
