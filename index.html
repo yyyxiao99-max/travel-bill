@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -8,410 +9,382 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
         :root {
-            --primary: #4A90D9;
-            --primary-light: #E8F1FA;
-            --bg: #F5F7FA;
+            --primary: #245E43;
+            --primary-hover: #1D4F38;
+            --accent: #2F8157;
+            --primary-light: #DFF1E6;
+            --bg: #F4F8F5;
             --card: #FFFFFF;
-            --text: #2C3E50;
-            --text-light: #7F8C8D;
-            --border: #E0E6ED;
-            --success: #52C41A;
-            --danger: #FF4D4F;
-            --warning: #FAAD14;
-            --shadow: 0 2px 12px rgba(0,0,0,0.08);
-            --radius: 16px;
+            --text: #173225;
+            --text-light: #789083;
+            --border: #DCE8E0;
+            --danger: #D94B4B;
+            --danger-light: #FCEBEA;
+            --warning: #B87418;
+            --warning-light: #FFF3DE;
+            --shadow-sm: 0 4px 14px rgba(23, 50, 37, 0.06);
+            --shadow-md: 0 12px 32px rgba(23, 50, 37, 0.10);
+            --radius-card: 18px;
+            --radius-control: 13px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { background: var(--bg); -webkit-text-size-adjust: 100%; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background:
+                radial-gradient(circle at 90% 0%, rgba(120, 181, 145, 0.16), transparent 28rem),
+                var(--bg);
             color: var(--text);
             min-height: 100vh;
-            padding-bottom: 80px;
+            padding-bottom: calc(40px + env(safe-area-inset-bottom));
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        button, input, select, textarea { font: inherit; }
+        button { -webkit-tap-highlight-color: transparent; }
+        button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+            outline: 3px solid rgba(47, 129, 87, 0.22);
+            outline-offset: 2px;
         }
 
         .header {
-            background: var(--card);
-            padding: 20px 16px 16px;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: calc(18px + env(safe-area-inset-top)) 18px 14px;
+            background: rgba(244, 248, 245, 0.88);
+            border-bottom: 1px solid rgba(220, 232, 224, 0.75);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
 
         .header h1 {
-            font-size: 20px;
-            font-weight: 600;
+            max-width: 600px;
+            margin: 0 auto;
             color: var(--text);
+            font-size: clamp(20px, 5.6vw, 24px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            overflow-wrap: anywhere;
         }
 
         .back-btn {
-            display: inline-block;
-            margin-bottom: 12px;
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 14px;
-            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 44px;
+            max-width: 600px;
+            margin: -8px auto 2px;
+            color: var(--accent);
             background: none;
-            border: none;
+            border: 0;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
         }
 
         .container {
+            width: 100%;
             max-width: 600px;
             margin: 0 auto;
-            padding: 16px;
+            padding: 18px;
         }
 
         .card {
+            position: relative;
             background: var(--card);
-            border-radius: var(--radius);
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow);
+            border: 1px solid rgba(220, 232, 224, 0.75);
+            border-radius: var(--radius-card);
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-sm);
         }
 
         .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: var(--text);
             display: flex;
             align-items: center;
             justify-content: space-between;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 20px;
-            border-radius: 12px;
-            border: none;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            width: 100%;
-            margin-bottom: 8px;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:active {
-            background: #3A7BC8;
-        }
-
-        .btn-secondary {
-            background: var(--primary-light);
-            color: var(--primary);
-        }
-
-        .btn-danger {
-            background: #FFF1F0;
-            color: var(--danger);
-        }
-
-        .btn-small {
-            padding: 8px 12px;
-            font-size: 13px;
-            width: auto;
-            margin-bottom: 0;
-        }
-
-        .input-group {
+            gap: 12px;
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 700;
             margin-bottom: 16px;
         }
 
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            min-height: 48px;
+            margin-bottom: 9px;
+            padding: 12px 18px;
+            border: 1px solid transparent;
+            border-radius: var(--radius-control);
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 650;
+            text-align: center;
+            transition: transform .16s ease, background-color .16s ease, box-shadow .16s ease;
+        }
+
+        .btn:active { transform: scale(0.985); }
+        .btn-primary { color: #fff; background: var(--primary); box-shadow: 0 8px 18px rgba(36, 94, 67, 0.18); }
+        .btn-primary:active { background: var(--primary-hover); }
+        .btn-secondary { color: var(--primary); background: var(--primary-light); }
+        .btn-danger { color: var(--danger); background: var(--danger-light); }
+        .btn-small { width: auto; min-height: 40px; margin: 0; padding: 8px 12px; font-size: 13px; }
+
+        .input-group { margin-bottom: 18px; }
         .input-group label {
             display: block;
-            font-size: 14px;
-            font-weight: 500;
             margin-bottom: 8px;
             color: var(--text);
+            font-size: 13px;
+            font-weight: 650;
         }
 
         .input-group input, .input-group select, .input-group textarea {
             width: 100%;
-            padding: 12px;
+            min-height: 48px;
+            padding: 12px 14px;
+            color: var(--text);
+            background: #FBFDFC;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            font-size: 15px;
-            font-family: inherit;
-            transition: all 0.3s;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(74,144,217,0.1);
-        }
-
-        .member-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .member-tag {
-            padding: 10px 16px;
-            border-radius: 20px;
-            background: var(--primary-light);
-            color: var(--primary);
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            user-select: none;
-            border: 2px solid transparent;
-        }
-
-        .member-tag.selected {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .radio-option {
-            flex: 1;
-            text-align: center;
-            padding: 12px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .radio-option.active {
-            border-color: var(--primary);
-            background: var(--primary-light);
-            color: var(--primary);
-        }
-
-        .activity-item {
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-
-        .activity-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .activity-name {
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .activity-amount {
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 15px;
-        }
-
-        .activity-detail {
-            font-size: 13px;
-            color: var(--text-light);
-            margin-bottom: 8px;
-        }
-
-        .activity-images {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .activity-images img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .activity-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .btn-edit {
-            background: #FFF7E6;
-            color: var(--warning);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .btn-delete {
-            background: #FFF1F0;
-            color: var(--danger);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .settlement {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: var(--radius);
-            margin-bottom: 16px;
-        }
-
-        .settlement-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-
-        .settlement-total {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .settlement-person {
-            background: rgba(255,255,255,0.15);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .settlement-person-name {
-            font-weight: 500;
-        }
-
-        .settlement-person-amount {
-            font-weight: 600;
+            border-radius: var(--radius-control);
             font-size: 16px;
+            transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
         }
 
-        .image-upload {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
+        .input-group input::placeholder, .input-group textarea::placeholder { color: #9AAEA2; }
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            outline: none;
+            background: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(47, 129, 87, 0.12);
         }
 
-        .image-preview-wrapper {
-            position: relative;
-            display: inline-block;
+        .member-tags { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 16px; }
+        .member-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 8px 14px;
+            color: var(--accent);
+            background: var(--primary-light);
+            border: 1px solid transparent;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            user-select: none;
+            transition: background .16s ease, color .16s ease, transform .16s ease;
         }
+        .member-tag.selected { color: #fff; background: var(--primary); }
+        .member-tag:active { transform: scale(.97); }
 
-        .image-preview {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .image-remove {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--danger);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
+        .radio-group { display: flex; gap: 10px; margin-bottom: 18px; }
+        .radio-option {
             display: flex;
             align-items: center;
             justify-content: center;
+            flex: 1;
+            min-height: 48px;
+            padding: 10px;
+            color: var(--text-light);
+            background: #FBFDFC;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-control);
             cursor: pointer;
-            font-size: 12px;
-            border: none;
+            font-size: 14px;
+            font-weight: 650;
+            text-align: center;
+            transition: all .16s ease;
         }
+        .radio-option.active { color: var(--primary); background: var(--primary-light); border-color: rgba(47, 129, 87, .45); }
 
-        .delete-btn {
-            background: none;
-            border: none;
-            color: var(--danger);
+        .activity-item {
+            position: relative;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #FBFDFC;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+        }
+        .activity-layout { display: flex; align-items: flex-start; gap: 12px; }
+        .activity-icon {
+            display: grid;
+            place-items: center;
+            flex: 0 0 42px;
+            width: 42px;
+            height: 42px;
+            color: var(--accent);
+            background: var(--primary-light);
+            border-radius: 13px;
+        }
+        .activity-content { flex: 1; min-width: 0; }
+        .ui-icon { width: 18px; height: 18px; flex: 0 0 auto; }
+        .modal-close .ui-icon { width: 21px; height: 21px; }
+        .activity-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+        .activity-name { min-width: 0; color: var(--text); font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
+        .activity-amount { flex-shrink: 0; color: var(--primary); font-size: 16px; font-weight: 750; font-variant-numeric: tabular-nums; }
+        .activity-detail { color: var(--text-light); font-size: 12px; line-height: 1.6; margin-bottom: 6px; overflow-wrap: anywhere; }
+        .activity-images { display: grid; grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); gap: 8px; margin-top: 11px; }
+        .activity-images img { width: 100%; aspect-ratio: 1; max-width: 96px; height: auto; object-fit: cover; border-radius: 11px; cursor: pointer; }
+        .activity-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 11px; }
+        .btn-edit, .btn-delete {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 40px;
+            padding: 8px 12px;
+            border: 0;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 13px;
-            padding: 4px 8px;
+            font-weight: 650;
         }
+        .btn-edit { color: var(--warning); background: var(--warning-light); }
+        .btn-delete { color: var(--danger); background: var(--danger-light); }
+
+        .settlement {
+            padding: 20px;
+            margin-bottom: 16px;
+            color: #fff;
+            background: linear-gradient(145deg, #245E43 0%, #337B59 100%);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-md);
+        }
+        .settlement-title { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; font-size: 15px; font-weight: 650; opacity: .82; }
+        .settlement-total { margin-bottom: 18px; font-size: clamp(28px, 9vw, 36px); font-weight: 750; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+        .settlement-person {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            min-height: 48px;
+            padding: 11px 12px;
+            margin-bottom: 8px;
+            background: rgba(255,255,255,.13);
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 12px;
+        }
+        .settlement-person-name { min-width: 0; font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+        .settlement-person-amount { flex-shrink: 0; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+        .image-upload { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 10px; margin-top: 10px; }
+        .image-preview-wrapper { position: relative; min-width: 0; }
+        .image-preview { display: block; width: 100%; max-width: 100px; aspect-ratio: 1; height: auto; object-fit: cover; border-radius: 12px; }
+        .image-remove {
+            position: absolute;
+            top: -7px;
+            right: -7px;
+            display: grid;
+            place-items: center;
+            width: 28px;
+            height: 28px;
+            color: #fff;
+            background: var(--danger);
+            border: 3px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 11px;
+        }
+        .delete-btn { min-height: 40px; padding: 8px 10px; color: var(--danger); background: transparent; border: 0; border-radius: 10px; cursor: pointer; }
 
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
+            inset: 0;
             z-index: 1000;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
+            padding-top: max(24px, env(safe-area-inset-top));
+            background: rgba(18, 35, 26, .46);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
         }
-
         .modal-content {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
+            width: 100%;
+            max-width: 600px;
+            max-height: calc(92vh - env(safe-area-inset-top));
             overflow-y: auto;
+            overscroll-behavior: contain;
+            padding: 22px 18px calc(18px + env(safe-area-inset-bottom));
+            background: var(--card);
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -14px 40px rgba(23, 50, 37, .16);
         }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+        .modal-content::before {
+            content: "";
+            display: block;
+            width: 38px;
+            height: 4px;
+            margin: -8px auto 15px;
+            background: var(--border);
+            border-radius: 999px;
         }
-
+        .modal-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .modal-header h2 { font-size: 19px; font-weight: 750; }
         .modal-close {
-            background: none;
-            border: none;
-            font-size: 24px;
+            display: grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            margin: -10px -8px -10px 0;
+            color: var(--text-light);
+            background: transparent;
+            border: 0;
+            border-radius: 50%;
             cursor: pointer;
-            color: var(--text-light);
+            font-size: 22px;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-light);
+        .empty-state { padding: 46px 20px; color: var(--text-light); text-align: center; line-height: 1.7; }
+        .empty-state-icon { margin-bottom: 12px; font-size: 42px; }
+        .empty-state-icon .ui-icon { width: 42px; height: 42px; }
+        .loading { padding: 30px 20px; color: var(--text-light); text-align: center; }
+        .project-summary {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 10px;
+            padding: 18px;
+            margin-bottom: 14px;
+            color: #fff;
+            background: linear-gradient(145deg, #245E43 0%, #337B59 100%);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-md);
+        }
+        .summary-cell { min-width: 0; }
+        .summary-label { display: block; margin-bottom: 5px; font-size: 11px; opacity: .72; }
+        .summary-value { display: block; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+        .summary-cell:first-child .summary-value { font-size: clamp(21px, 7vw, 28px); letter-spacing: -.03em; }
+
+        @media (max-width: 360px) {
+            .container { padding: 14px; }
+            .card { padding: 15px; }
+            .header { padding-left: 14px; padding-right: 14px; }
+            .settlement-total { font-size: 27px; }
+            .radio-group { gap: 7px; }
         }
 
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
+        @media (min-width: 601px) {
+            .header { padding-top: 20px; }
+            .container { padding: 24px 0; }
+            .modal { align-items: center; padding: 30px; }
+            .modal-content { width: min(500px, 100%); max-height: 84vh; padding: 24px; border-radius: 22px; }
+            .modal-content::before { display: none; }
         }
 
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-light);
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
         }
     </style>
 </head>
@@ -419,7 +392,7 @@
     <div id="app">
         <div id="homePage">
             <div class="header">
-                <h1>📊 出行分账计算器</h1>
+                <h1>出行分账计算器</h1>
             </div>
             <div class="container">
                 <button class="btn btn-primary" onclick="showCreateProject()">＋ 新建项目</button>
@@ -429,13 +402,14 @@
 
         <div id="projectPage" style="display:none;">
             <div class="header">
-                <button class="back-btn" onclick="backToHome()">← 返回</button>
+                <button class="back-btn" onclick="backToHome()" aria-label="返回项目列表"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>返回</button>
                 <h1 id="projectTitle"></h1>
             </div>
             <div class="container">
+                <div class="project-summary" id="projectSummary" aria-label="项目概览"></div>
                 <div class="card">
                     <div class="card-title">
-                        <span>👥 项目成员</span>
+                        <span>项目成员</span>
                         <button class="btn btn-small btn-secondary" onclick="showEditMembers()">编辑成员</button>
                     </div>
                     <div class="member-tags" id="projectMembers"></div>
@@ -443,7 +417,7 @@
 
                 <div class="card">
                     <div class="card-title">
-                        <span>📝 活动记录</span>
+                        <span>活动记录</span>
                         <button class="btn btn-small btn-primary" onclick="showAddActivity()">＋ 添加活动</button>
                     </div>
                     <div id="activityList"></div>
@@ -460,7 +434,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>新建项目</h2>
-                <button class="modal-close" onclick="closeModal('createProjectModal')">✕</button>
+                <button class="modal-close" onclick="closeModal('createProjectModal')" aria-label="关闭"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
             </div>
             <div class="input-group">
                 <label>项目名称</label>
@@ -478,7 +452,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>编辑成员</h2>
-                <button class="modal-close" onclick="closeModal('editMembersModal')">✕</button>
+                <button class="modal-close" onclick="closeModal('editMembersModal')" aria-label="关闭"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
             </div>
             <div class="input-group">
                 <label>成员（用逗号分隔）</label>
@@ -492,7 +466,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="activityModalTitle">添加活动</h2>
-                <button class="modal-close" onclick="closeModal('addActivityModal')">✕</button>
+                <button class="modal-close" onclick="closeModal('addActivityModal')" aria-label="关闭"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
             </div>
             <div class="input-group">
                 <label>活动名称</label>
@@ -552,6 +526,35 @@
         let editingActivityId = null;
         let unsubscribe = null;
 
+        function icon(name) {
+            const paths = {
+                food: '<path d="M7 3v8M4.5 3v5.5A2.5 2.5 0 0 0 7 11v10M9.5 3v5.5A2.5 2.5 0 0 1 7 11M16 3v18M16 3c3 2 4 5 4 8h-4"/>',
+                stay: '<path d="M3 20V9l9-6 9 6v11M7 20v-7h10v7M9 10h.01M15 10h.01"/>',
+                transport: '<path d="M5 17h14M7 17l-2-5 2-5h10l2 5-2 5M8 20h.01M16 20h.01M6 12h12"/>',
+                shopping: '<path d="M5 8h14l-1 13H6L5 8ZM9 10V7a3 3 0 0 1 6 0v3"/>',
+                fun: '<path d="M12 3l2.6 5.3 5.9.9-4.3 4.2 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.2 5.9-.9L12 3Z"/>',
+                receipt: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3ZM9 8h6M9 12h6M9 16h4"/>',
+                edit: '<path d="M4 20h4l11-11-4-4L4 16v4ZM13.5 6.5l4 4"/>',
+                trash: '<path d="M4 7h16M9 7V4h6v3M7 7l1 14h8l1-14M10 11v6M14 11v6"/>',
+                diamond: '<path d="M3 9l4-5h10l4 5-9 12L3 9Zm0 0h18M8 4l4 17 4-17"/>'
+            };
+            const path = paths[name] || paths.receipt;
+            return `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg>`;
+        }
+
+        function getActivityIcon(name) {
+            const value = String(name || '').toLowerCase();
+            const rules = [
+                ['food', /饭|餐|吃|火锅|咖啡|奶茶|酒/],
+                ['stay', /酒店|民宿|住宿|房|旅馆/],
+                ['transport', /车|地铁|公交|打车|机票|飞机|高铁|火车|船/],
+                ['shopping', /买|购物|商场|超市|礼物/],
+                ['fun', /门票|景点|乐园|电影|唱歌|娱乐/]
+            ];
+            const match = rules.find(([, pattern]) => pattern.test(value));
+            return icon(match ? match[0] : 'receipt');
+        }
+
         function init() {
             loadProjects();
         }
@@ -572,7 +575,7 @@
         function renderProjectList() {
             const list = document.getElementById('projectList');
             if (projects.length === 0) {
-                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><p>还没有项目，点击上方按钮创建吧！</p></div>';
+                list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">${icon('receipt')}</div><p>还没有项目，点击上方按钮创建吧！</p></div>`;
             } else {
                 list.innerHTML = projects.map((project, index) => `
                     <div class="card" onclick="openProject('${project.id}')" style="cursor:pointer;">
@@ -648,6 +651,14 @@
         }
 
         function renderProjectDetails(project) {
+            const total = calculateTotal(project);
+            const memberCount = project.members.length;
+            const average = memberCount ? total / memberCount : 0;
+            document.getElementById('projectSummary').innerHTML = `
+                <div class="summary-cell"><span class="summary-label">总支出</span><span class="summary-value">¥${total.toFixed(2)}</span></div>
+                <div class="summary-cell"><span class="summary-label">活动</span><span class="summary-value">${(project.activities || []).length} 笔</span></div>
+                <div class="summary-cell"><span class="summary-label">人均参考</span><span class="summary-value">¥${average.toFixed(2)}</span></div>
+            `;
             document.getElementById('projectMembers').innerHTML = project.members.map(m => 
                 `<span class="member-tag">${m}</span>`
             ).join('');
@@ -673,18 +684,23 @@
                     
                     return `
                         <div class="activity-item">
-                            <div class="activity-header">
-                                <div class="activity-name">${activity.name}</div>
-                                <div class="activity-amount">¥${activity.totalAmount.toFixed(2)}</div>
-                            </div>
-                            <div class="activity-detail">
-                                ${activity.members.join('、')} · ${activity.type === 'avg' ? '平均花费' : '不平均花费'}
-                            </div>
-                            <div class="activity-detail">${detailText}</div>
-                            ${imagesHtml}
-                            <div class="activity-actions">
-                                <button class="btn-edit" onclick="editActivity(${index})">编辑</button>
-                                <button class="btn-delete" onclick="deleteActivity(${index})">删除</button>
+                            <div class="activity-layout">
+                                <div class="activity-icon">${getActivityIcon(activity.name)}</div>
+                                <div class="activity-content">
+                                    <div class="activity-header">
+                                        <div class="activity-name">${activity.name}</div>
+                                        <div class="activity-amount">¥${activity.totalAmount.toFixed(2)}</div>
+                                    </div>
+                                    <div class="activity-detail">
+                                        ${activity.members.join('、')} · ${activity.type === 'avg' ? '平均花费' : '不平均花费'}
+                                    </div>
+                                    <div class="activity-detail">${detailText}</div>
+                                    ${imagesHtml}
+                                    <div class="activity-actions">
+                                        <button class="btn-edit" onclick="editActivity(${index})">${icon('edit')}编辑</button>
+                                        <button class="btn-delete" onclick="deleteActivity(${index})">${icon('trash')}删除</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -698,7 +714,7 @@
             
             const settlementHtml = `
                 <div class="settlement">
-                    <div class="settlement-title">💎 项目结算</div>
+                    <div class="settlement-title">${icon('diamond')} 项目结算</div>
                     <div class="settlement-total">总花费：¥${total.toFixed(2)}</div>
                     ${project.members.map(member => `
                         <div class="settlement-person">
