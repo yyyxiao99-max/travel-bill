@@ -516,6 +516,9 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        db.settings({
+            experimentalForceLongPolling: true
+        });
 
         let projects = [];
         let currentProjectId = null;
@@ -562,7 +565,16 @@
             if (unsubscribe) {
                 unsubscribe();
             }
-            unsubscribe = db.collection('projects').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+
+            document.getElementById('projectList').innerHTML = '<div class="loading">正在连接云端数据...</div>';
+
+            const query = db.collection('projects').orderBy('createdAt', 'desc');
+            unsubscribe = query.onSnapshot({ includeMetadataChanges: true }, (snapshot) => {
+                if (snapshot.empty && snapshot.metadata.fromCache) {
+                    document.getElementById('projectList').innerHTML = '<div class="loading">正在连接云端数据...</div>';
+                    return;
+                }
+
                 projects = [];
                 snapshot.forEach((doc) => {
                     projects.push({ id: doc.id, ...doc.data() });
@@ -570,7 +582,7 @@
                 renderProjectList();
             }, (error) => {
                 console.error('加载失败:', error);
-                document.getElementById('projectList').innerHTML = '<div class="empty-state"><p>加载失败，请检查网络</p></div>';
+                document.getElementById('projectList').innerHTML = `<div class="empty-state"><p>云端数据连接失败</p><p style="font-size:12px;margin-top:8px;">${error.message}</p></div>`;
             });
         }
 
@@ -637,10 +649,20 @@
             unsubscribe = db.collection('projects').doc(projectId).onSnapshot((doc) => {
                 if (doc.exists) {
                     const project = { id: doc.id, ...doc.data() };
+                    syncProjectCache(project);
                     document.getElementById('projectTitle').textContent = project.name;
                     renderProjectDetails(project);
                 }
             });
+        }
+
+        function syncProjectCache(project) {
+            const index = projects.findIndex(item => item.id === project.id);
+            if (index === -1) {
+                projects.push(project);
+            } else {
+                projects[index] = project;
+            }
         }
 
         function backToHome() {
