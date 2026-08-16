@@ -703,7 +703,7 @@
                         : '';
                     
                     const detailText = activity.type === 'avg' 
-                        ? `人均：¥${(activity.totalAmount / activity.members.length).toFixed(2)}`
+                        ? `人均：¥${calculateAverageShare(activity.totalAmount, activity.members.length).toFixed(2)}`
                         : activity.memberAmounts.map(ma => `${ma.member}：¥${ma.amount.toFixed(2)}`).join('，');
                     
                     return `
@@ -756,13 +756,19 @@
             return (project.activities || []).reduce((sum, activity) => sum + activity.totalAmount, 0);
         }
 
+        function calculateAverageShare(totalAmount, memberCount) {
+            if (!memberCount) return 0;
+            const totalCents = Math.round(totalAmount * 100);
+            return Math.ceil(totalCents / memberCount) / 100;
+        }
+
         function calculatePersonTotals(project) {
             const totals = {};
             project.members.forEach(m => totals[m] = 0);
             
             (project.activities || []).forEach(activity => {
                 if (activity.type === 'avg') {
-                    const perPerson = activity.totalAmount / activity.members.length;
+                    const perPerson = calculateAverageShare(activity.totalAmount, activity.members.length);
                     activity.members.forEach(m => {
                         totals[m] += perPerson;
                     });
