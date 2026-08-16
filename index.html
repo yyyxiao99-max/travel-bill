@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>出行分账计算器</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
         :root {
             --primary: #4A90D9;
@@ -405,6 +407,12 @@
             font-size: 48px;
             margin-bottom: 16px;
         }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+        }
     </style>
 </head>
 <body>
@@ -415,7 +423,7 @@
             </div>
             <div class="container">
                 <button class="btn btn-primary" onclick="showCreateProject()">＋ 新建项目</button>
-                <div id="projectList"></div>
+                <div id="projectList"><div class="loading">加载中...</div></div>
             </div>
         </div>
 
@@ -514,7 +522,7 @@
                 </div>
             </div>
             <div class="input-group">
-                <label>上传图片（最多3张）</label>
+                <label>上传图片（最多3张，自动压缩）</label>
                 <input type="file" id="imageInput" accept="image/*" multiple style="display:block;margin-bottom:10px;" onchange="handleImageUpload(event)">
                 <div class="image-upload" id="imageUploadArea"></div>
             </div>
@@ -523,27 +531,42 @@
     </div>
 
     <script>
+        // Firebase配置
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbej2WflKtEaA980DouDe7Ddtt0f6YwBk",
+            authDomain: "travel-bill-44019.firebaseapp.com",
+            projectId: "travel-bill-44019",
+            storageBucket: "travel-bill-44019.firebasestorage.app",
+            messagingSenderId: "605023308270",
+            appId: "1:605023308270:web:e6a4b18cbfb9253607a6ff"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         let projects = [];
-        let currentProjectIndex = -1;
+        let currentProjectId = null;
         let currentType = 'avg';
         let selectedMembers = [];
         let currentActivityImages = [];
-        let editingActivityIndex = -1;
+        let editingActivityId = null;
+        let unsubscribe = null;
 
         function init() {
             loadProjects();
-            renderProjectList();
         }
 
         function loadProjects() {
-            const stored = localStorage.getItem('projects');
-            if (stored) {
-                projects = JSON.parse(stored);
-            }
-        }
-
-        function saveProjects() {
-            localStorage.setItem('projects', JSON.stringify(projects));
+            unsubscribe = db.collection('projects').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+                projects = [];
+                snapshot.forEach((doc) => {
+                    projects.push({ id: doc.id, ...doc.data() });
+                });
+                renderProjectList();
+            }, (error) => {
+                console.error('加载失败:', error);
+                document.getElementById('projectList').innerHTML = '<div class="empty-state"><p>加载失败，请检查网络</p></div>';
+            });
         }
 
         function renderProjectList() {
@@ -552,7 +575,7 @@
                 list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><p>还没有项目，点击上方按钮创建吧！</p></div>';
             } else {
                 list.innerHTML = projects.map((project, index) => `
-                    <div class="card" onclick="openProject(${index})" style="cursor:pointer;">
+                    <div class="card" onclick="openProject('${project.id}')" style="cursor:pointer;">
                         <div class="activity-header">
                             <div class="activity-name">${project.name}</div>
                             <div class="activity-amount">¥${calculateTotal(project).toFixed(2)}</div>
@@ -569,7 +592,7 @@
             document.getElementById('createProjectModal').style.display = 'flex';
         }
 
-        function createProject() {
+        async function createProject() {
             const name = document.getElementById('newProjectName').value.trim();
             const membersStr = document.getElementById('newProjectMembers').value.trim();
             
@@ -584,51 +607,59 @@
                 return;
             }
 
-            projects.push({
-                name: name,
-                members: members,
-                activities: [],
-                createdAt: new Date().toISOString()
-            });
-
-            saveProjects();
-            renderProjectList();
-            closeModal('createProjectModal');
+            try {
+                await db.collection('projects').add({
+                    name: name,
+                    members: members,
+                    activities: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                closeModal('createProjectModal');
+            } catch (error) {
+                alert('创建失败：' + error.message);
+            }
         }
 
-        function openProject(index) {
-            currentProjectIndex = index;
-            const project = projects[index];
-            
+        function openProject(projectId) {
+            currentProjectId = projectId;
             document.getElementById('homePage').style.display = 'none';
             document.getElementById('projectPage').style.display = 'block';
-            document.getElementById('projectTitle').textContent = project.name;
             
-            renderProjectDetails();
+            if (unsubscribe) {
+                unsubscribe();
+            }
+            
+            unsubscribe = db.collection('projects').doc(projectId).onSnapshot((doc) => {
+                if (doc.exists) {
+                    const project = { id: doc.id, ...doc.data() };
+                    document.getElementById('projectTitle').textContent = project.name;
+                    renderProjectDetails(project);
+                }
+            });
         }
 
         function backToHome() {
+            if (unsubscribe) {
+                unsubscribe();
+            }
             document.getElementById('projectPage').style.display = 'none';
             document.getElementById('homePage').style.display = 'block';
-            renderProjectList();
+            loadProjects();
         }
 
-        function renderProjectDetails() {
-            const project = projects[currentProjectIndex];
-            
+        function renderProjectDetails(project) {
             document.getElementById('projectMembers').innerHTML = project.members.map(m => 
                 `<span class="member-tag">${m}</span>`
             ).join('');
             
-            renderActivities();
-            renderSettlement();
+            renderActivities(project);
+            renderSettlement(project);
         }
 
-        function renderActivities() {
-            const project = projects[currentProjectIndex];
+        function renderActivities(project) {
             const list = document.getElementById('activityList');
             
-            if (project.activities.length === 0) {
+            if (!project.activities || project.activities.length === 0) {
                 list.innerHTML = '<div class="empty-state"><p>还没有活动记录</p></div>';
             } else {
                 list.innerHTML = project.activities.map((activity, index) => {
@@ -661,8 +692,7 @@
             }
         }
 
-        function renderSettlement() {
-            const project = projects[currentProjectIndex];
+        function renderSettlement(project) {
             const total = calculateTotal(project);
             const personTotals = calculatePersonTotals(project);
             
@@ -683,14 +713,14 @@
         }
 
         function calculateTotal(project) {
-            return project.activities.reduce((sum, activity) => sum + activity.totalAmount, 0);
+            return (project.activities || []).reduce((sum, activity) => sum + activity.totalAmount, 0);
         }
 
         function calculatePersonTotals(project) {
             const totals = {};
             project.members.forEach(m => totals[m] = 0);
             
-            project.activities.forEach(activity => {
+            (project.activities || []).forEach(activity => {
                 if (activity.type === 'avg') {
                     const perPerson = activity.totalAmount / activity.members.length;
                     activity.members.forEach(m => {
@@ -707,12 +737,14 @@
         }
 
         function showEditMembers() {
-            const project = projects[currentProjectIndex];
-            document.getElementById('editMembersInput').value = project.members.join(',');
-            document.getElementById('editMembersModal').style.display = 'flex';
+            const project = projects.find(p => p.id === currentProjectId);
+            if (project) {
+                document.getElementById('editMembersInput').value = project.members.join(',');
+                document.getElementById('editMembersModal').style.display = 'flex';
+            }
         }
 
-        function updateMembers() {
+        async function updateMembers() {
             const membersStr = document.getElementById('editMembersInput').value.trim();
             const members = membersStr.split(/[,，、\s]+/).filter(m => m);
             
@@ -721,14 +753,18 @@
                 return;
             }
             
-            projects[currentProjectIndex].members = members;
-            saveProjects();
-            renderProjectDetails();
-            closeModal('editMembersModal');
+            try {
+                await db.collection('projects').doc(currentProjectId).update({
+                    members: members
+                });
+                closeModal('editMembersModal');
+            } catch (error) {
+                alert('更新失败：' + error.message);
+            }
         }
 
         function showAddActivity() {
-            editingActivityIndex = -1;
+            editingActivityId = null;
             document.getElementById('activityModalTitle').textContent = '添加活动';
             selectedMembers = [];
             currentActivityImages = [];
@@ -745,14 +781,16 @@
         }
 
         function editActivity(index) {
-            editingActivityIndex = index;
-            document.getElementById('activityModalTitle').textContent = '编辑活动';
+            const project = projects.find(p => p.id === currentProjectId);
+            if (!project) return;
             
-            const activity = projects[currentProjectIndex].activities[index];
+            const activity = project.activities[index];
+            editingActivityId = index;
+            document.getElementById('activityModalTitle').textContent = '编辑活动';
             
             document.getElementById('activityName').value = activity.name;
             selectedMembers = [...activity.members];
-            currentActivityImages = [...activity.images];
+            currentActivityImages = [...(activity.images || [])];
             
             selectType(activity.type);
             
@@ -790,7 +828,9 @@
         }
 
         function renderActivityMembers() {
-            const project = projects[currentProjectIndex];
+            const project = projects.find(p => p.id === currentProjectId);
+            if (!project) return;
+            
             const container = document.getElementById('activityMembers');
             
             container.innerHTML = project.members.map(member => `
@@ -835,13 +875,43 @@
                     break;
                 }
                 
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentActivityImages.push(e.target.result);
+                compressImage(file, function(compressedDataUrl) {
+                    currentActivityImages.push(compressedDataUrl);
                     renderImageUploads();
-                };
-                reader.readAsDataURL(file);
+                });
             }
+        }
+
+        function compressImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    let width = img.width;
+                    let height = img.height;
+                    const maxSize = 800;
+                    
+                    if (width > height && width > maxSize) {
+                        height = height * (maxSize / width);
+                        width = maxSize;
+                    } else if (height > maxSize) {
+                        width = width * (maxSize / height);
+                        height = maxSize;
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6);
+                    callback(compressedDataUrl);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
         function renderImageUploads() {
@@ -862,7 +932,7 @@
             renderImageUploads();
         }
 
-        function saveActivity() {
+        async function saveActivity() {
             const name = document.getElementById('activityName').value.trim();
             
             if (!name) {
@@ -908,30 +978,51 @@
                 activity.totalAmount = totalAmount;
             }
             
-            if (editingActivityIndex === -1) {
-                projects[currentProjectIndex].activities.push(activity);
-            } else {
-                projects[currentProjectIndex].activities[editingActivityIndex] = activity;
+            try {
+                const projectRef = db.collection('projects').doc(currentProjectId);
+                const project = projects.find(p => p.id === currentProjectId);
+                let activities = [...(project.activities || [])];
+                
+                if (editingActivityId === null) {
+                    activities.push(activity);
+                } else {
+                    activities[editingActivityId] = activity;
+                }
+                
+                await projectRef.update({
+                    activities: activities
+                });
+                
+                closeModal('addActivityModal');
+            } catch (error) {
+                alert('保存失败：' + error.message);
             }
-            
-            saveProjects();
-            renderProjectDetails();
-            closeModal('addActivityModal');
         }
 
-        function deleteActivity(index) {
+        async function deleteActivity(index) {
             if (confirm('确定要删除这个活动吗？')) {
-                projects[currentProjectIndex].activities.splice(index, 1);
-                saveProjects();
-                renderProjectDetails();
+                try {
+                    const project = projects.find(p => p.id === currentProjectId);
+                    let activities = [...project.activities];
+                    activities.splice(index, 1);
+                    
+                    await db.collection('projects').doc(currentProjectId).update({
+                        activities: activities
+                    });
+                } catch (error) {
+                    alert('删除失败：' + error.message);
+                }
             }
         }
 
-        function deleteCurrentProject() {
+        async function deleteCurrentProject() {
             if (confirm('确定要删除整个项目吗？此操作不可恢复！')) {
-                projects.splice(currentProjectIndex, 1);
-                saveProjects();
-                backToHome();
+                try {
+                    await db.collection('projects').doc(currentProjectId).delete();
+                    backToHome();
+                } catch (error) {
+                    alert('删除失败：' + error.message);
+                }
             }
         }
 
